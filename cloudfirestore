@@ -1,0 +1,9 @@
+Cloud Firestore.
+
+With this database if certain information change then all devices connected
+to it will update instantly. Cloud firestore is in beta. Cloud firestore is
+very cheap.
+
+Cloud firestore is based on concept of collections.
+
+Getting started with firebase.
