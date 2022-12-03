@@ -11,16 +11,7 @@ const Home = () => {
   const [blogList, setBlogList] = useState(null);
 
   useEffect(() => {
-    const unSubscribe = onSnapshot(
-      query(collection(db, "posts")),
-      async (query) => {
-        const newPosts = [];
-        query.forEach((doc) => {
-          newPosts.push({ id: doc.id, ...doc.data() });
-        });
-        setBlogList(newPosts);
-      }
-    );
+    const { unSubscribe } = getPosts(setBlogList);
     return () => {
       unSubscribe();
     };
@@ -29,17 +20,11 @@ const Home = () => {
   const handleChange = (e) => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
   };
-  const handleDelete = async (e, id) => {
-    console.log(id);
-    await deletePost(id);
-    const newBlogList = blogList.filter(({ id: bId }) => id !== bId);
-    setBlogList(newBlogList);
-  };
+  const handleDelete = async (e, id) => await deletePost(id);
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    const blogPost = await addPost(formState);
-    setBlogList([...blogList, blogPost]);
+    await addPost(formState);
     setFormState({});
   };
   return (

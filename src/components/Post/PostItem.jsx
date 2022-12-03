@@ -1,11 +1,21 @@
 import React, { useEffect } from "react";
 import { BookMark, Comment, ThumbsUp } from "../vectors";
 
-const PostItem = ({ id, title, content, like, comments, handleDelete }) => {
+const PostItem = ({
+  id,
+  title,
+  content,
+  createdAt,
+  like,
+  comments,
+  handleDelete,
+}) => {
   return (
     <div className="border flex flex-col gap-4 justify-between rounded-lg border-[#1E293B] py-4 px-6">
       <div className="flex flex-col gap-3">
-        <h4 className="text-xl text-gray-100 font-semibold">{title}</h4>
+        <h4 className="text-xl text-gray-100 font-semibold">
+          {title} - {createdAt}
+        </h4>
         <p className="text-gray-500">{content}</p>
       </div>
       <div className="flex justify-between items-center">

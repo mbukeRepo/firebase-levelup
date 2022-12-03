@@ -3,23 +3,31 @@ import {
   addDoc,
   doc,
   collection,
-  getDocs,
   deleteDoc,
   onSnapshot,
+  query,
+  serverTimestamp,
 } from "firebase/firestore";
-
-export const getPosts = async () => {
-  const posts = await getDocs(collection(db, "posts"));
-  const newPosts = [];
-  posts.forEach((doc) => {
-    newPosts.push({ id: doc.id, ...doc.data() });
-  });
-  return newPosts;
+export const getPosts = (setBlogList) => {
+  const unSubscribe = onSnapshot(
+    query(collection(db, "posts")),
+    async (query) => {
+      const posts = [];
+      query.forEach((doc) => {
+        posts.push({ id: doc.id, ...doc.data() });
+      });
+      console.log(posts);
+      setBlogList(posts);
+    }
+  );
+  return { unSubscribe };
 };
 
 export const addPost = async (post) => {
-  const docRef = await addDoc(collection(db, "posts"), post);
-  return await { id: docRef.id, ...post };
+  await addDoc(collection(db, "posts"), {
+    ...post,
+    createdAt: serverTimestamp(),
+  });
 };
 
 export const deletePost = async (id) => {
