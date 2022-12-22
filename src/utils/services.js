@@ -1,4 +1,4 @@
-import db from "./firebase";
+import db, { auth } from "./firebase";
 import {
   addDoc,
   doc,
@@ -7,7 +7,9 @@ import {
   onSnapshot,
   query,
   serverTimestamp,
+  updateDoc,
 } from "firebase/firestore";
+import { GoogleAuthProvider, signInWithRedirect, signOut } from "firebase/auth";
 export const getPosts = (setBlogList) => {
   const unSubscribe = onSnapshot(
     query(collection(db, "posts")),
@@ -16,7 +18,6 @@ export const getPosts = (setBlogList) => {
       query.forEach((doc) => {
         posts.push({ id: doc.id, ...doc.data() });
       });
-      console.log(posts);
       setBlogList(posts);
     }
   );
@@ -32,4 +33,18 @@ export const addPost = async (post) => {
 
 export const deletePost = async (id) => {
   await deleteDoc(doc(collection(db, "posts"), id));
+};
+
+export const likePost = async (likes, id) => {
+  const docRef = doc(collection(db, "posts"), id);
+  await updateDoc(docRef, { like: likes ? likes + 1 : 1 });
+};
+
+export const signInGoogle = () => {
+  const provider = new GoogleAuthProvider();
+  return signInWithRedirect(auth, provider);
+};
+
+export const signOutUser = async () => {
+  await signOut(auth);
 };

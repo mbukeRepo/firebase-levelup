@@ -1,0 +1,17 @@
+// modifying your own data
+// allowed to delete, update and read if userId matches the currently logged in user
+// allowed to create if the user is logged in
+service cloud.firestore {
+ match /databases/{database}/documents {
+  match /users/{userId} {
+   allow read, write, delete: if request.auth.uid == userId;
+   allow create: if request.auth.uid != null
+  }
+ }
+}
+
+// resource.data all fields on the document on the database
+// request.resource.data all  incoming document
+
+// exists(/databases/$(database)/documents/users/$(request.auth.uid));
+// get(/databases/$(database)/documents/users/$(request.auth.uid)).data

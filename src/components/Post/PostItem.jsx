@@ -9,6 +9,7 @@ const PostItem = ({
   like,
   comments,
   handleDelete,
+  likeHandler,
 }) => {
   return (
     <div className="border flex flex-col gap-4 justify-between rounded-lg border-[#1E293B] py-4 px-6">
@@ -35,9 +36,12 @@ const PostItem = ({
             <Comment />
             <span>12</span>
           </div>
-          <div className="flex items-center gap-2">
+          <div
+            className="flex items-center gap-2"
+            onClick={() => likeHandler(id)}
+          >
             <ThumbsUp />
-            <span>12</span>
+            <span>{like}</span>
           </div>
         </div>
       </div>
